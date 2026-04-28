@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lash Theory</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #111;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 32px;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+    }
+
+    .nav-logo {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      line-height: 1.25;
+      color: #111;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover { color: #111; }
+
+    .nav-cart {
+      font-size: 14px;
+      color: #333;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: #fce8f0;
+      text-align: center;
+      padding: 64px 32px 72px;
+    }
+
+    .hero h1 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 48px;
+      font-weight: 400;
+      font-style: italic;
+      color: #111;
+      margin-bottom: 14px;
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      color: #c0476b;
+      margin-bottom: 32px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      padding: 14px 30px;
+      background: #c0476b;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 999px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .hero-btn:hover { background: #a83a5c; }
+
+    /* ── PRODUCTS ── */
+    .products {
+      padding: 48px 32px 56px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .products h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: #111;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      border: 1.5px solid #e8e8e8;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .card-thumb {
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+    }
+
+    .card-body {
+      padding: 14px 14px 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .badge-bestseller { background: #fce3eb; color: #c0476b; }
+    .badge-new { background: #ddeaf8; color: #4a7fc1; }
+
+    .card-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 2px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 14px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-price {
+      font-size: 15px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .btn-add {
+      padding: 8px 18px;
+      background: #fff;
+      border: 1.5px solid #d0d0d0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #111;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .btn-add:hover { border-color: #aaa; background: #f8f8f8; }
+    .btn-add:active { background: #f0f0f0; }
+
+    /* ── TRUST ── */
+    .trust {
+      background: #faf7f4;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      padding: 32px 32px;
+      gap: 16px;
+      max-width: 100%;
+    }
+
+    .trust-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .trust-diamond {
+      font-size: 18px;
+      color: #111;
+    }
+
+    /* ── FOOTER STRIP ── */
+    .footer-strip {
+      background: #fce8f0;
+      text-align: center;
+      padding: 18px 32px;
+      font-size: 14px;
+      color: #c0476b;
+    }
+
+    .footer-strip strong { font-weight: 700; }
+
+    /* ── CART TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #111;
+      color: #fff;
+      font-size: 13px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .hero h1 { font-size: 32px; }
+      .trust { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">LASH<br>THEORY</a>
+  <ul class="nav-links">
+    <li><a href="#products">Shop</a></li>
+    <li><a href="#trust">About</a></li>
+    <li><a href="#">FAQ</a></li>
+  </ul>
+  <button class="nav-cart" onclick="openCart()" aria-label="Cart">Cart (<span id="cartCount">0</span>)</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Lashes that do the talking</h1>
+  <p class="hero-sub">5 styles &nbsp;·&nbsp; Faux strip lashes &nbsp;·&nbsp; Free express shipping over $99</p>
+  <a href="#products" class="hero-btn">All styles $10 AUD</a>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <h2>Shop all styles</h2>
+  <div class="grid" id="productGrid">
+
+    <div class="card">
+      <div class="card-thumb" style="background:#fadadd;">👁️</div>
+      <div class="card-body">
+        <span class="badge badge-bestseller">Bestseller</span>
+        <p class="card-name">No. 01 — Natural Glam</p>
+        <p class="card-desc">Natural flutter</p>
+        <div class="card-footer">
+          <span class="card-price">$10</span>
+          <button class="btn-add" onclick="addToCart('No. 01 — Natural Glam')">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:#dde8d4;">👁️</div>
+      <div class="card-body">
+        <p class="card-name">No. 02 — Dramatic Queen</p>
+        <p class="card-desc">Bold &amp; full</p>
+        <div class="card-footer">
+          <span class="card-price">$10</span>
+          <button class="btn-add" onclick="addToCart('No. 02 — Dramatic Queen')">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:#dce9f5;">👁️</div>
+      <div class="card-body">
+        <p class="card-name">No. 03 — Cat Eye Vixen</p>
+        <p class="card-desc">Winged flare</p>
+        <div class="card-footer">
+          <span class="card-price">$10</span>
+          <button class="btn-add" onclick="addToCart('No. 03 — Cat Eye Vixen')">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:#f2e5cc;">👁️</div>
+      <div class="card-body">
+        <p class="card-name">No. 04 — Wispy Butterfly</p>
+        <p class="card-desc">Feathered tips</p>
+        <div class="card-footer">
+          <span class="card-price">$10</span>
+          <button class="btn-add" onclick="addToCart('No. 04 — Wispy Butterfly')">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:#e5dff0;">👁️</div>
+      <div class="card-body">
+        <span class="badge badge-new">New</span>
+        <p class="card-name">No. 05 — Bold Baddie</p>
+        <p class="card-desc">Max volume</p>
+        <div class="card-footer">
+          <span class="card-price">$10</span>
+          <button class="btn-add" onclick="addToCart('No. 05 — Bold Baddie')">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:#d8ede4;">👁️</div>
+      <div class="card-body">
+        <p class="card-name">No. 06 — Kitten</p>
+        <p class="card-desc">Short &amp; sweet</p>
+        <div class="card-footer">
+          <span class="card-price">$10</span>
+          <button class="btn-add" onclick="addToCart('No. 06 — Kitten')">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:#f8ddd8;">👁️</div>
+      <div class="card-body">
+        <p class="card-name">No. 07 — Demi</p>
+        <p class="card-desc">Half lash</p>
+        <div class="card-footer">
+          <span class="card-price">$10</span>
+          <button class="btn-add" onclick="addToCart('No. 07 — Demi')">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:#e2e8d0;">👁️</div>
+      <div class="card-body">
+        <p class="card-name">No. 08 — Bridal</p>
+        <p class="card-desc">Soft &amp; romantic</p>
+        <div class="card-footer">
+          <span class="card-price">$10</span>
+          <button class="btn-add" onclick="addToCart('No. 08 — Bridal')">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:#f8d8e3;">👁️</div>
+      <div class="card-body">
+        <p class="card-name">No. 09 — Night Out</p>
+        <p class="card-desc">Party-ready</p>
+        <div class="card-footer">
+          <span class="card-price">$10</span>
+          <button class="btn-add" onclick="addToCart('No. 09 — Night Out')">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:#d8e5f2;">👁️</div>
+      <div class="card-body">
+        <span class="badge badge-new">New</span>
+        <p class="card-name">No. 10 — Invisible</p>
+        <p class="card-desc">Clear band</p>
+        <div class="card-footer">
+          <span class="card-price">$10</span>
+          <button class="btn-add" onclick="addToCart('No. 10 — Invisible')">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust" id="trust">
+  <div class="trust-item">
+    <span class="trust-diamond">&#x2666;</span>
+    <span>Reusable up to 25×</span>
+  </div>
+  <div class="trust-item">
+    <span class="trust-diamond">&#x2666;</span>
+    <span>Cruelty-free faux fibre</span>
+  </div>
+  <div class="trust-item">
+    <span class="trust-diamond">&#x2666;</span>
+    <span>Free express shipping over $99</span>
+  </div>
+</div>
+
+<!-- FOOTER STRIP -->
+<div class="footer-strip">
+  Buy any 3 styles, get free express post &nbsp;·&nbsp; Use code <strong>LASHBUNDLE</strong>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const STORE = 'lashtheoryshop.myshopify.com';
+  const TOKEN = 'c7ee17ce2b8fe7c0dc82a6ba62dc0792';
+  const API   = `https://${STORE}/api/2024-04/graphql.json`;
+
+  const THUMB_COLORS = [
+    '#fadadd','#dde8d4','#dce9f5','#f2e5cc','#e5dff0',
+    '#d8ede4','#f8ddd8','#e2e8d0','#f8d8e3','#d8e5f2'
+  ];
+
+  let cartId          = sessionStorage.getItem('lt_cart_id')  || null;
+  let cartCheckoutUrl = sessionStorage.getItem('lt_cart_url') || null;
+  let toastTimer;
+
+  async function gql(query, variables = {}) {
+    const r = await fetch(API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': TOKEN,
+      },
+      body: JSON.stringify({ query, variables }),
+    });
+    return r.json();
+  }
+
+  async function getOrCreateCart() {
+    if (cartId) return { id: cartId, checkoutUrl: cartCheckoutUrl };
+    const { data } = await gql(`mutation { cartCreate { cart { id checkoutUrl } } }`);
+    const cart = data.cartCreate.cart;
+    cartId = cart.id;
+    cartCheckoutUrl = cart.checkoutUrl;
+    sessionStorage.setItem('lt_cart_id',  cartId);
+    sessionStorage.setItem('lt_cart_url', cartCheckoutUrl);
+    return cart;
+  }
+
+  async function addToCart(variantId, name, btn) {
+    btn.textContent = '...';
+    btn.disabled = true;
+    try {
+      const cart = await getOrCreateCart();
+      const { data } = await gql(
+        `mutation Add($cartId: ID!, $vid: ID!) {
+           cartLinesAdd(cartId: $cartId, lines: [{ merchandiseId: $vid, quantity: 1 }]) {
+             cart { totalQuantity checkoutUrl }
+           }
+         }`,
+        { cartId: cart.id, vid: variantId }
+      );
+      const updated = data.cartLinesAdd.cart;
+      cartCheckoutUrl = updated.checkoutUrl;
+      sessionStorage.setItem('lt_cart_url', cartCheckoutUrl);
+      document.getElementById('cartCount').textContent = updated.totalQuantity;
+      showToast(name + ' added to cart');
+    } catch(e) {
+      showToast('Something went wrong — try again');
+    }
+    btn.textContent = '+ Add';
+    btn.disabled = false;
+  }
+
+  async function loadProducts() {
+    try {
+      const { data } = await gql(
+        `{ products(first: 10) {
+             edges { node {
+               title
+               description
+               variants(first: 1) {
+                 edges { node { id price { amount currencyCode } } }
+               }
+             }}
+           }}`
+      );
+      const products = data.products.edges.map(e => e.node);
+      if (!products.length) return;
+      document.getElementById('productGrid').innerHTML = products.map((p, i) => {
+        const variant  = p.variants.edges[0]?.node;
+        const amount   = variant ? Math.round(parseFloat(variant.price.amount)) : '—';
+        const currency = variant?.price.currencyCode || 'AUD';
+        const color    = THUMB_COLORS[i % THUMB_COLORS.length];
+        const num      = String(i + 1).padStart(2, '0');
+        const vid      = variant?.id || '';
+        return `
+          <div class="card">
+            <div class="card-thumb" style="background:${color};">👁️</div>
+            <div class="card-body">
+              <p class="card-name">No. ${num} — ${p.title}</p>
+              <p class="card-desc">${p.description || ''}</p>
+              <div class="card-footer">
+                <span class="card-price">$${amount} ${currency}</span>
+                <button class="btn-add" onclick="addToCart('${vid}','${p.title}',this)">+ Add</button>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    } catch(e) {
+      // keep static fallback cards already in the DOM
+    }
+  }
+
+  function openCart() {
+    if (cartCheckoutUrl) {
+      window.location.href = cartCheckoutUrl;
+    } else {
+      showToast('Your cart is empty');
+    }
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  loadProducts();
+</script>
+</body>
+</html>
